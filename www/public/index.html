@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laptop Finder</title>
+    <link rel="stylesheet" type="text/css" href="./css/mystyle.css">
+    <!--Google Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Glitch&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Secular+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@300&display=swap" rel="stylesheet">
+    <!-- Vue library -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- Link to JavaScript for Vue Router Library -->
+    <!-- <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script> -->
+    <script src="https://unpkg.com/vue-router@4.0.15/dist/vue-router.global.js"></script> 
+    <!-- Axios library -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- Splide library-->
+    <link rel="stylesheet" type="text/css" href="./extensions/splide-4.1.3/dist/css/splide.min.css">
+    <script src="./extensions/splide-4.1.3/dist/js/splide.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <form type="POST" id="search-container" onsubmit="return false">
+            <label @click="goHome">LAPTOP </br> FINDER</label>
+            <input id="search-text-field" type="search" placeholder="Search Product..." />
+            <input @click="searchProducts" id="search-button" type="image" src="./images/search.png" width="20px"
+                height="20px" />
+        </form>
+        <div id="filter-container">
+            <input @change="sortProducts" name="option" id="filter-price" type="radio" value="price" checked>
+            <label class="radio-label" for="filter-price" >PRICE</label><br>
+            <input @change="sortProducts" name="option"  id="filter-ram" type="radio" value="ram">
+            <label  class="radio-label" for="filter-ram" >RAM</label><br>
+            <input @change="sortProducts" name="option"  id="filter-ssd" type="radio" value="ssd">
+            <label  class="radio-label" for="filter-ssd" >SSD</label><br>
+            <input @change="sortProducts" id="sort-products" type="checkbox" name="checkbox" value="asc">
+            <label class="checkbox-label" for="sort-products" >></label>
+        </div>
+
+        <div id="products-container">
+            <div class="product-wrapper" v-for="laptop in laptops" v-bind:id="laptop.id" @click="getProductDetail">
+                <img class="product-image" v-bind:src="laptop.image_url">
+                <h2 class="product-title">{{laptop.brand}} {{laptop.model}}</h2>
+                <span class="product-sub-title"><h3 class="product-price">£{{laptop.price}}</h3><div>{{laptop.cpu}}, {{laptop.year}}, {{laptop.screen}}, {{laptop.ram}} RAM, {{laptop.ssd}} SSD</div></span>
+            </div>
+            <div class="pagenation">
+                <button @click="prevPage" class="pagenation-button" type="button">Prev</button>
+                <h2 id="page-0" class="page-label"></h2>
+                <button @click="nextPage" class="pagenation-button" type="button">Next</button>
+            </div>
+        </div>
+        
+
+        <div id="product-detail-container">
+            <button @click="goBack"  class="go-back-button" type="button">Go Back</button>
+            <div class="product-detail-wrapper" v-for="laptop in laptops" v-if="laptop.id === laptopId">
+
+                <img class="product-detail-image" v-bind:src="laptop.image_url">
+          
+                <div class="product-specs">
+                    <h2>{{laptop.brand}} {{laptop.model}}</h2>
+                        <b>Screen size: </b>{{laptop.screen}}</br>
+                        <b>Year: </b>{{laptop.year}}</br> 
+                        <b>RAM: </b>{{laptop.ram}}</br>
+                        <b>SSD: </b>{{laptop.ssd}}</br>
+                        <b>CPU: </b>{{laptop.cpu}}
+                </div>
+
+                <div><h3>Description</h3><p>{{laptop.description}}</p></div>
+
+                <div id="product-detail-links-wrapper">
+                    <h3>Prices</h3>
+                    <div class="product-detail-links" v-for="comparison in comparisons">
+                        <a v-bind:href="comparison.url">{{comparison.supplier}}: £{{comparison.price}}</a>
+                    </div>
+                </div>
+                
+
+            </div>
+            
+        </div>
+
+        <div class="splide">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    <li class="splide__slide">
+                        <h2>MACBOOK PRO<label>NEW</label></h2>
+                        <a href="https://www.apple.com/shop/buy-mac/macbook-pro/13-inch-space-gray-apple-m2-chip-with-8-core-cpu-and-10-core-gpu-256gb">MORE INFO</a>
+                        <img src="./images/macbookPro.jpg" alt="">
+                    </li>
+                    <li class="splide__slide">
+                        <h2>MACBOOK AIR<label>NEW</label></h2>
+                        <a href="https://www.apple.com/shop/buy-mac/macbook-air/midnight-apple-m2-chip-with-8-core-cpu-and-8-core-gpu-256gb">MORE INFO</a>
+                        <img src="./images/air.jpg" alt="">
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="./client.js"></script>
+    <script type="module" src="./js/main.js"></script>
+</body>
+
+</html>
